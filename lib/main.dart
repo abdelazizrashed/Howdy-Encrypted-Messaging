@@ -3,6 +3,7 @@ import 'package:howdy/core/utilities/utilities.dart';
 import 'package:howdy/route_generator.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   bool isLoggedIn = false;
   isLoggedIn = await isUserLoggedIn();
   runApp(MyApp(
