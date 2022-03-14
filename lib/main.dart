@@ -1,9 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:howdy/core/utilities/utilities.dart';
 import 'package:howdy/route_generator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  // var snapeshot = FirebaseFirestore.instance.collection("Users").snapshots();
+  // print(snapeshot);
   bool isLoggedIn = false;
   isLoggedIn = await isUserLoggedIn();
   runApp(MyApp(
@@ -21,7 +26,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Howdy: Encrypted messaging app',
       theme: ThemeData.dark(),
-      initialRoute: isLoggedIn ? "/" : "/auth",
+      initialRoute: isLoggedIn ? "/home" : "/auth",
       onGenerateRoute: RouteGenerator.generateRoute,
     );
   }

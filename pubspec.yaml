@@ -29,16 +29,24 @@ environment:
 dependencies:
   cached_network_image: ^3.2.0
   cloud_firestore: ^3.1.10
+  convert: ^3.0.1
   cupertino_icons: ^1.0.2
+  either_dart: ^0.1.4
   firebase_auth: ^3.3.9
   firebase_core: ^1.13.1
   firebase_storage: ^10.2.9
   flutter:
     sdk: flutter
+  flutter_native_splash: ^2.0.5
+  fluttericon: ^2.0.0
   fluttertoast: ^8.0.9
+  font_awesome_flutter: ^9.2.0
   google_sign_in: ^5.2.4
+  http: ^0.13.4
   image_picker: ^0.8.4+10
   intl: ^0.17.0
+  intl_phone_field: ^3.0.1
+  rsa_encrypt: ^2.0.0
   shared_preferences: ^2.0.13
 
 dev_dependencies:
