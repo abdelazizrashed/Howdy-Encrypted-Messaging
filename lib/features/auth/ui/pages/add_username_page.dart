@@ -6,12 +6,12 @@ import 'package:howdy/features/auth/services/services.dart';
 
 class AddUsernamePage extends StatelessWidget {
   final UserCredential userCredential;
-  AddUsernamePage({Key? key, required this.userCredential}) : super(key: key);
-
-  TextEditingController usernameController = TextEditingController();
+  const AddUsernamePage({Key? key, required this.userCredential})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController usernameController = TextEditingController();
     return Scaffold(
       appBar: AppBar(
         title: const Text("Add username"),
@@ -25,7 +25,7 @@ class AddUsernamePage extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
         child: Column(
           children: [
             TextField(
@@ -56,6 +56,7 @@ class AddUsernamePage extends StatelessWidget {
                     username: usernameController.text,
                   );
                   UserServices.saveUserInDatabase(user);
+                  UserServices.setUserLoggedIn(user);
                   Navigator.of(context).popUntil((route) => route.isFirst);
                   Navigator.of(context).pop();
                   Navigator.of(context).pushNamed("/home");

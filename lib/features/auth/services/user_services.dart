@@ -15,7 +15,6 @@ class UserServices {
     var ref = FirebaseFirestore.instance.collection("Users").doc(user.username);
     var json = UserServices.toJson(user);
     ref.set(json);
-    // setUserLoggedIn(user); //Todo uncomment this
   }
 
   static Map<String, Object> toJson(UserModel user) {

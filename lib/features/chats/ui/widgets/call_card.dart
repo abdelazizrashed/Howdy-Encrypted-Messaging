@@ -25,7 +25,7 @@ class CallCard extends StatelessWidget {
               height: 60,
               child: Image(
                 image: AssetImage(call["img"] as String),
-                fit: BoxFit.fill,
+                fit: BoxFit.cover,
               ),
             ),
           ),

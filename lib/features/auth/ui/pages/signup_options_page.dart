@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:howdy/features/auth/services/auth.dart';
 // import 'package:fluttericon/font_awesome_icons.dart';
@@ -38,7 +37,9 @@ class SignupOptionsPage extends StatelessWidget {
             _renderSingupOptionBtn(
               "Register with email",
               Icons.email_outlined,
-              () {},
+              () {
+                Navigator.of(context).pushNamed("/register-with-email");
+              },
             ),
           ],
         ),

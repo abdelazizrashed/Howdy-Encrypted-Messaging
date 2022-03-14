@@ -11,7 +11,7 @@ class MessageCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        print("hello");
+        //Todo: do something here
       },
       child: Padding(
         padding: const EdgeInsets.all(8),
@@ -24,7 +24,7 @@ class MessageCard extends StatelessWidget {
                 height: 60,
                 child: Image(
                   image: AssetImage(msg["img"] as String),
-                  fit: BoxFit.fill,
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
@@ -180,6 +180,5 @@ class MessageCard extends StatelessWidget {
 // }
 
 void _onCallCardTapped() {
-  print("not hello");
   //Todo: Implement this function
 }

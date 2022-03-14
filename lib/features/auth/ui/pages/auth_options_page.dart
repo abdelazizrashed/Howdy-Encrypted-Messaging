@@ -1,14 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:howdy/features/auth/services/auth.dart';
 
 class AuthOptionsPage extends StatelessWidget {
   const AuthOptionsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    CollectionReference usersCollection =
-        FirebaseFirestore.instance.collection("Users");
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(

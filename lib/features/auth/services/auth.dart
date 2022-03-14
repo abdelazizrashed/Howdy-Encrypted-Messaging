@@ -1,9 +1,47 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:howdy/features/auth/models/models.dart';
+import 'package:howdy/features/auth/services/services.dart';
 
 class AuthServices {
   //* Auth using email and password
+
+  static Future<void> registerWithEmail(
+    PlatformFile? avatar,
+    String username,
+    String displayName,
+    String email,
+    String password,
+    BuildContext context,
+  ) async {
+    String photoURL = "";
+    if (avatar != null) {
+      var uploadTask = await FirebaseStorage.instance
+          .ref("avatars/$username/$username.${avatar.extension ?? "png"}")
+          .putFile(File(avatar.path ?? ""));
+      photoURL = await uploadTask.ref.getDownloadURL();
+    } else {
+      photoURL =
+          "https://firebasestorage.googleapis.com/v0/b/howdy-f2c44.appspot.com/o/avatars%2Fempty_profile_photo.jpg?alt=media&token=6f58ee29-7dfd-436b-9660-0f6462d02048";
+    }
+    var userCreds = await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email, password: password);
+    UserModel user = UserModel(
+      displayName: displayName,
+      email: email,
+      photoURL: photoURL,
+      uid: userCreds.user?.uid ?? "",
+      username: username,
+    );
+    UserServices.saveUserInDatabase(user);
+    UserServices.setUserLoggedIn(user);
+  }
 
   //* Auth using google account
   static Future<UserCredential> signinWithGoogle() async {
