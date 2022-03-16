@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../../services/services.dart';
+
 class AuthOptionsPage extends StatelessWidget {
   const AuthOptionsPage({Key? key}) : super(key: key);
 
@@ -54,8 +56,8 @@ class AuthOptionsPage extends StatelessWidget {
                 ),
               ),
             ),
-            onPressed: () {
-              Navigator.of(context).pushNamed("/signup-options");
+            onPressed: () async {
+              
             },
             child: const Padding(
               padding: EdgeInsets.only(

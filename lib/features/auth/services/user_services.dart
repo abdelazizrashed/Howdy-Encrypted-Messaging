@@ -3,16 +3,20 @@ import 'package:howdy/features/auth/models/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserServices {
-  static Future<bool> checkIfUserExists(String username) async {
-    var user = await FirebaseFirestore.instance
+  static Future<bool> checkIfUsernameExists(String username) async {
+    var users = await FirebaseFirestore.instance
         .collection("Users")
-        .doc(username)
+        .where("username", isEqualTo: username)
         .get();
-    return user.exists;
+    if (users.size > 0) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   static void saveUserInDatabase(UserModel user) {
-    var ref = FirebaseFirestore.instance.collection("Users").doc(user.username);
+    var ref = FirebaseFirestore.instance.collection("Users").doc(user.uid);
     var json = UserServices.toJson(user);
     ref.set(json);
   }
@@ -37,7 +41,7 @@ class UserServices {
 
     prefs.setString("photoUrl", user.photoURL);
 
-    prefs.setString("userId", user.uid);
+    prefs.setString("uid", user.uid);
     prefs.setBool("isLoggedIn", true);
   }
 }

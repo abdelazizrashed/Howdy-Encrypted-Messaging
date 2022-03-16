@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:howdy/features/auth/ui/pages/pages.dart';
-import 'package:howdy/features/auth/ui/pages/register_with_email.dart';
 import 'package:howdy/features/chats/ui/pages/pages.dart';
 
 class RouteGenerator {
@@ -28,5 +27,6 @@ class RouteGenerator {
       default:
         return MaterialPageRoute(builder: (_) => const HomePage());
     }
+    // throw Exception("No Route");
   }
 }

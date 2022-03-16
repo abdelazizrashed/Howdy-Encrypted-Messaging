@@ -42,7 +42,7 @@ class AddUsernamePage extends StatelessWidget {
                 if (usernameController.text.isEmpty) {
                   Fluttertoast.showToast(msg: "username is empty");
                 } else {
-                  var exists = await UserServices.checkIfUserExists(
+                  var exists = await UserServices.checkIfUsernameExists(
                       usernameController.text);
                   if (exists) {
                     Fluttertoast.showToast(msg: "username already exists");

@@ -22,6 +22,7 @@ class _RegisterWithEmailPageState extends State<RegisterWithEmailPage> {
     TextEditingController emailController = TextEditingController();
     TextEditingController usernameController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
+    TextEditingController confirmPasswordController = TextEditingController();
     return Scaffold(
       appBar: AppBar(
         title: const Text("Rgister with email"),
@@ -85,8 +86,18 @@ class _RegisterWithEmailPageState extends State<RegisterWithEmailPage> {
                       height: 20,
                     ),
                     TextField(
+                      obscureText: true,
                       controller: passwordController,
                       decoration: const InputDecoration(hintText: "Password"),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    TextField(
+                      obscureText: true,
+                      controller: confirmPasswordController,
+                      decoration:
+                          const InputDecoration(hintText: "Confirm password"),
                     ),
                     const SizedBox(
                       height: 20,
@@ -106,7 +117,7 @@ class _RegisterWithEmailPageState extends State<RegisterWithEmailPage> {
                           Fluttertoast.showToast(msg: "Username is required");
                           return;
                         }
-                        var exists = await UserServices.checkIfUserExists(
+                        var exists = await UserServices.checkIfUsernameExists(
                             usernameController.text);
                         if (exists) {
                           Fluttertoast.showToast(
@@ -118,8 +129,18 @@ class _RegisterWithEmailPageState extends State<RegisterWithEmailPage> {
                           Fluttertoast.showToast(msg: "Password is required");
                           return;
                         }
+                        if (confirmPasswordController.text.isEmpty) {
+                          Fluttertoast.showToast(msg: "You need to confirm the password");
+                          return;
+                        }
                         if (!isPasswordStrongEnough(passwordController.text)) {
                           Fluttertoast.showToast(msg: "The password is weak");
+                          return;
+                        }
+                        if (passwordController.text !=
+                            confirmPasswordController.text) {
+                          Fluttertoast.showToast(msg: "Password is wrong");
+                          return;
                         }
                         setState(() {
                           isLoading = true;
