@@ -15,13 +15,26 @@ class UserServices {
     }
   }
 
+  static Future<bool> checkIfUserExists(String uid) async {
+    var snapshot =
+        await FirebaseFirestore.instance.collection("Users").doc(uid).get();
+    return snapshot.exists;
+  }
+
   static void saveUserInDatabase(UserModel user) {
     var ref = FirebaseFirestore.instance.collection("Users").doc(user.uid);
     var json = UserServices.toJson(user);
     ref.set(json);
   }
 
-  static Map<String, Object> toJson(UserModel user) {
+  static Future<UserModel> getUserFromDatabase(String uid) async {
+    var snapshot =
+        await FirebaseFirestore.instance.collection("Users").doc(uid).get();
+    var json = snapshot.data() ?? {"": null};
+    return UserServices.fromJson(json);
+  }
+
+  static Map<String, dynamic> toJson(UserModel user) {
     return {
       "displayName": user.displayName,
       "email": user.email,
@@ -29,6 +42,16 @@ class UserServices {
       "uid": user.uid,
       "username": user.username,
     };
+  }
+
+  static UserModel fromJson(Map<String, dynamic> json) {
+    return UserModel(
+      email: json["email"] as String,
+      displayName: json["displayName"] as String,
+      photoURL: json["photoURL"] as String,
+      uid: json["uid"] as String,
+      username: json["username"] as String,
+    );
   }
 
   static void setUserLoggedIn(UserModel user) async {
