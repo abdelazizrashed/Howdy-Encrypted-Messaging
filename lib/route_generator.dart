@@ -24,6 +24,8 @@ class RouteGenerator {
             builder: (_) => AddUsernamePage(userCredential: args));
       case "/register-with-email":
         return MaterialPageRoute(builder: (_) => const RegisterWithEmailPage());
+      case "/login-with-email":
+        return MaterialPageRoute(builder: (_) => const LoginWithEmailPage());
       default:
         return MaterialPageRoute(builder: (_) => const HomePage());
     }

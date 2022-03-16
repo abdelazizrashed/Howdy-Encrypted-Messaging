@@ -43,6 +43,16 @@ class AuthServices {
     UserServices.setUserLoggedIn(user);
   }
 
+  static Future<UserCredential> loginWithEmail(
+    String email,
+    String password,
+  ) async {
+    var userCreds = await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password);
+    // .createUserWithEmailAndPassword(email: email, password: password);
+    return userCreds;
+  }
+
   //* Auth using google account
   static Future<UserCredential> signinWithGoogle() async {
     // Trigger the authentication flow

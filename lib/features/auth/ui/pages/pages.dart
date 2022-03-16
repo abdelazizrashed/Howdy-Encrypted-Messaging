@@ -4,3 +4,4 @@ export 'login_options_page.dart';
 export 'add_phone_number_page.dart';
 export 'add_username_page.dart';
 export "register_with_email.dart";
+export 'login_with_email_page.dart';

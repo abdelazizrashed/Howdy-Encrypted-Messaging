@@ -57,7 +57,7 @@ class LoginOptionsPage extends StatelessWidget {
               "Login with email",
               Icons.email_outlined,
               () {
-                Navigator.of(context).pushNamed("/register-with-email");
+                Navigator.of(context).pushNamed("/login-with-email");
               },
             ),
           ],
