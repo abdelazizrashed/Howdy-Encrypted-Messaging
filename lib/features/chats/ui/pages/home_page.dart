@@ -17,6 +17,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String appBarTitle = "Messages";
   IconData addIcon = FontAwesome5.edit;
+  int _page = 0;
+  late PageController pageController = PageController(initialPage: _page);
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -48,47 +51,55 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
-        body: const TabBarView(
-          children: [
+        body: PageView(
+          controller: pageController,
+          onPageChanged: (newPage) {
+            setState(() {
+              _page = newPage;
+            });
+            switch (newPage) {
+              case 0:
+                setState(() {
+                  appBarTitle = "Messages";
+                  addIcon = FontAwesome5.edit;
+                });
+                break;
+              case 1:
+                setState(() {
+                  appBarTitle = "Calls";
+                  addIcon = Icons.add_call;
+                });
+                break;
+            }
+          },
+          children: const [
             ChatsPage(),
             CallsPage(),
           ],
         ),
-        bottomNavigationBar: BottomAppBar(
-          child: TabBar(
-            onTap: (tabIndex) {
-              switch (tabIndex) {
-                case 0:
-                  setState(() {
-                    appBarTitle = "Messages";
-                    addIcon = FontAwesome5.edit;
-                  });
-                  break;
-                case 1:
-                  setState(() {
-                    appBarTitle = "Calls";
-                    addIcon = Icons.add_call;
-                  });
-                  break;
-              }
-            },
-            tabs: const [
-              Tab(
-                child: Icon(
-                  Icons.message,
-                  color: Colors.blue,
-                ),
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _page,
+          items: const [
+            BottomNavigationBarItem(
+              label: "CHATS",
+              icon: Icon(
+                Icons.message,
+                color: Colors.blue,
               ),
-              Tab(
-                child: Icon(
-                  Icons.phone,
-                  color: Colors.blue,
-                ),
+            ),
+            BottomNavigationBarItem(
+              label: "CALLS",
+              icon: Icon(
+                Icons.phone,
+                color: Colors.blue,
               ),
-            ],
-          ),
-          shape: const CircularNotchedRectangle(),
-          notchMargin: 5.0,
+            ),
+          ],
+          onTap: (tabIndex) {
+            pageController.animateToPage(tabIndex,
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeInOut);
+          },
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: FloatingActionButton(
