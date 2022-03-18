@@ -126,7 +126,7 @@ IconButton _renderCallBtn(CallType callType) {
         color: Colors.grey,
       ),
       onPressed: () {
-        //Todo: implement call functionality
+        //TODO: implement call functionality
       },
     );
   } else {
@@ -136,12 +136,12 @@ IconButton _renderCallBtn(CallType callType) {
         color: Colors.grey,
       ),
       onPressed: () {
-        //Todo: implement call functionality
+        //TODO: implement call functionality
       },
     );
   }
 }
 
 void _onCallCardTapped() {
-  //Todo: Implement this function
+  //TODO: Implement this function
 }

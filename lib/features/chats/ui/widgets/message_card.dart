@@ -11,7 +11,7 @@ class MessageCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        //Todo: do something here
+        //TODO: do something here
       },
       child: Padding(
         padding: const EdgeInsets.all(8),
@@ -163,7 +163,7 @@ class MessageCard extends StatelessWidget {
 //         color: Colors.grey,
 //       ),
 //       onPressed: () {
-//         //Todo: implement call functionality
+//         //TODO: implement call functionality
 //       },
 //     );
 //   } else {
@@ -173,12 +173,12 @@ class MessageCard extends StatelessWidget {
 //         color: Colors.grey,
 //       ),
 //       onPressed: () {
-//         //Todo: implement call functionality
+//         //TODO: implement call functionality
 //       },
 //     );
 //   }
 // }
 
 void _onCallCardTapped() {
-  //Todo: Implement this function
+  //TODO: Implement this function
 }

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:howdy/features/auth/ui/widgets/widgets.dart';
 
+import '../../bloc/blocs.dart';
 import '../../services/services.dart';
 
 class LoginOptionsPage extends StatelessWidget {
@@ -26,70 +29,51 @@ class LoginOptionsPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           // crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            _renderSingupOptionBtn(
-              "Login with google account",
-              FontAwesomeIcons.google,
-              () async {
-                var userCredentials = await AuthServices.signinWithGoogle();
-                bool isNewUser =
-                    userCredentials.additionalUserInfo?.isNewUser ?? true;
-                if (isNewUser) {
-                  Navigator.of(context)
-                      .pushNamed("/add-username", arguments: userCredentials);
-                } else if (userCredentials.user != null) {
-                  var userExists = await UserServices.checkIfUserExists(
-                      userCredentials.user?.uid ?? "");
-                  if (!userExists) {
+            BlocListener<AuthBloc, AuthState>(
+              listener: (context, state) async {
+                if (state is LoggedIn) {
+                  var userCredentials = state.userCredential;
+                  bool isNewUser =
+                      userCredentials.additionalUserInfo?.isNewUser ?? true;
+                  if (isNewUser) {
                     Navigator.of(context)
                         .pushNamed("/add-username", arguments: userCredentials);
-                  } else {
-                    var user = await UserServices.getUserFromDatabase(
+                  } else if (userCredentials.user != null) {
+                    var userExists = await UserServices.checkIfUserExists(
                         userCredentials.user?.uid ?? "");
-                    UserServices.setUserLoggedIn(user);
+                    if (!userExists) {
+                      Navigator.of(context).pushNamed("/add-username",
+                          arguments: userCredentials);
+                    } else {
+                      var user = await UserServices.getUserFromDatabase(
+                          userCredentials.user?.uid ?? "");
+                      UserServices.setUserLoggedIn(user);
+                    }
+                  } else {
+                    Fluttertoast.showToast(
+                        msg: "Something went wrong. Try again.");
                   }
-                } else {
-                  Fluttertoast.showToast(
-                      msg: "Something went wrong. Try again.");
                 }
               },
+              child: SignupLoginOptionBtn(
+                lbl: "Login with google account",
+                icon: FontAwesomeIcons.google,
+                callback: () async {
+                  // var userCredentials = await AuthServices.signinWithGoogle();
+                  context.read<AuthBloc>().add(const LoginWithGoogle());
+                  
+                },
+              ),
             ),
-            _renderSingupOptionBtn(
-              "Login with email",
-              Icons.email_outlined,
-              () {
+            SignupLoginOptionBtn(
+              lbl: "Login with email",
+              icon: Icons.email_outlined,
+              callback: () {
                 Navigator.of(context).pushNamed("/login-with-email");
               },
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _renderSingupOptionBtn(
-    String lbl,
-    IconData icon,
-    Function()? callback,
-  ) {
-    return Container(
-      margin: const EdgeInsets.all(10),
-      child: ElevatedButton.icon(
-        style: ElevatedButton.styleFrom(
-          minimumSize: const Size(350, 50),
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(30),
-            ),
-          ),
-        ),
-        onPressed: callback,
-        label: Text(
-          lbl,
-          style: const TextStyle(
-            fontSize: 20,
-          ),
-        ),
-        icon: Icon(icon),
       ),
     );
   }

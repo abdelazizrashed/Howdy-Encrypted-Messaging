@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:howdy/features/auth/services/auth.dart';
-// import 'package:fluttericon/font_awesome_icons.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:howdy/features/auth/bloc/blocs.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:howdy/features/auth/ui/widgets/widgets.dart';
 
 class SignupOptionsPage extends StatelessWidget {
   const SignupOptionsPage({Key? key}) : super(key: key);
@@ -25,52 +26,30 @@ class SignupOptionsPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           // crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            _renderSingupOptionBtn(
-              "Register with google account",
-              FontAwesomeIcons.google,
-              () async {
-                var userCredentials = await AuthServices.signinWithGoogle();
-                Navigator.of(context)
-                    .pushNamed("/add-username", arguments: userCredentials);
+            BlocListener<AuthBloc, AuthState>(
+              listener: (context, state) {
+                if (state is LoggedIn) {
+                  Navigator.of(context).pushNamed("/add-username",
+                      arguments: state.userCredential);
+                }
               },
+              child: SignupLoginOptionBtn(
+                lbl: "Register with google account",
+                icon: FontAwesomeIcons.google,
+                callback: () {
+                  context.read<AuthBloc>().add(const LoginWithGoogle());
+                },
+              ),
             ),
-            _renderSingupOptionBtn(
-              "Register with email",
-              Icons.email_outlined,
-              () {
+            SignupLoginOptionBtn(
+              lbl: "Register with email",
+              icon: Icons.email_outlined,
+              callback: () {
                 Navigator.of(context).pushNamed("/register-with-email");
               },
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _renderSingupOptionBtn(
-    String lbl,
-    IconData icon,
-    Function()? callback,
-  ) {
-    return Container(
-      margin: const EdgeInsets.all(10),
-      child: ElevatedButton.icon(
-        style: ElevatedButton.styleFrom(
-          minimumSize: const Size(350, 50),
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(30),
-            ),
-          ),
-        ),
-        onPressed: callback,
-        label: Text(
-          lbl,
-          style: const TextStyle(
-            fontSize: 20,
-          ),
-        ),
-        icon: Icon(icon),
       ),
     );
   }

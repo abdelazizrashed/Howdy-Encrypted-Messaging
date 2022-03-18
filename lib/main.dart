@@ -1,14 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:howdy/core/utilities/utilities.dart';
-import 'package:howdy/features/auth/services/services.dart';
 import 'package:howdy/route_generator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   bool isLoggedIn = false;
-  // isLoggedIn = await isUserLoggedIn();
+  isLoggedIn = await isUserLoggedIn();
   runApp(MyApp(
     isLoggedIn: isLoggedIn,
   ));
