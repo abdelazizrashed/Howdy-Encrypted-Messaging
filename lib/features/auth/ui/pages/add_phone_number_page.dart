@@ -75,37 +75,6 @@ class _AddPhoneNumberPageState extends State<AddPhoneNumberPage> {
                   ),
                 ],
               ),
-  //           ElevatedButton(
-  //             onPressed: () {
-  //               if(doesLoadVerificationArea){
-  // PhoneAuthCredential credential = PhoneAuthProvider.credential(
-  //               verificationId: verificationId, smsCode: smsCode);
-
-  //           // Sign the user in (or link) with the credential
-  //           await FirebaseAuth.instance.signInWithCredential(credential);
-  //               }else{
-  //                 AuthServices.registerUsingPhoneNumber(
-  //                     selectedCountry.dialCode + phoneNumberController.text,
-  //                     (user) {
-  //                   setUserLoggedIn(
-  //                     user?.email,
-  //                     user?.displayName,
-  //                     user?.phoneNumber,
-  //                     user?.photoURL,
-  //                     user?.uid,
-  //                   );
-  //                   Navigator.of(context).popAndPushNamed("/");
-  //                 }, (callback) {
-  //                   var code = "....";
-  //                   callback(code);
-  //                 });
-
-  //               }
-  //             },
-  //             child: Text(
-  //               doesLoadVerificationArea ? "Verify" : "Register",
-  //             ),
-  //           ),
           ],
         ),
       ),

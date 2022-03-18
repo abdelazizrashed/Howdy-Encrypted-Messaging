@@ -12,7 +12,7 @@ part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   late AuthServices _auth;
-  AuthBloc() : super(AuthLoading()) {
+  AuthBloc() : super(AuthIdle()) {
     _auth = AuthServices();
     on<RegisterWithEmailAndPasswordEvent>(_onRegisterWithEmailAndPassword);
     on<LoginWithEmailAndPasswordEvent>(_onLoginWithEmailAndPassword);

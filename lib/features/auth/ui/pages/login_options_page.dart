@@ -45,11 +45,11 @@ class LoginOptionsPage extends StatelessWidget {
                       Navigator.of(context).pushNamed("/add-username",
                           arguments: userCredentials);
                     } else {
-                      context.read<UserBloc>().add(
-                            GetUserFromDatabaseEvent(
-                              userCredentials.user?.uid ?? "",
-                            ),
-                          );
+                      BlocProvider.of<UserBloc>(context).add(
+                        GetUserFromDatabaseEvent(
+                          userCredentials.user?.uid ?? "",
+                        ),
+                      );
                     }
                   } else {
                     Fluttertoast.showToast(
@@ -60,19 +60,29 @@ class LoginOptionsPage extends StatelessWidget {
               child: BlocListener<UserBloc, UserState>(
                 listener: (context, state) {
                   if (state is GetUserLoaded) {
-                    context.read<UserBloc>().add(
-                          SetUserLoggedInEvent(
-                            state.user,
-                          ),
-                        );
+                    BlocProvider.of<UserBloc>(context).add(
+                      SetUserLoggedInEvent(
+                        state.user,
+                      ),
+                    );
+                  } else if (state is SetUserLoaded) {
+                    Navigator.of(context).popUntil((route) => route.isFirst);
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pushNamed("/home");
                   }
                 },
                 child: SignupLoginOptionBtn(
                   lbl: "Login with google account",
                   icon: FontAwesomeIcons.google,
                   callback: () async {
-                    // var userCredentials = await AuthServices.signinWithGoogle();
-                    context.read<AuthBloc>().add(const LoginWithGoogleEvent());
+                    if (AuthServices.isLoggedIn()) {
+                      Navigator.of(context).popUntil((route) => route.isFirst);
+                      Navigator.of(context).pop();
+                      Navigator.of(context).pushNamed("/home");
+                    } else {
+                      BlocProvider.of<AuthBloc>(context)
+                          .add(const LoginWithGoogleEvent());
+                    }
                   },
                 ),
               ),

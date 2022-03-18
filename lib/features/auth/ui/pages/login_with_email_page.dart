@@ -40,7 +40,7 @@ class _LoginWithEmailPageState extends State<LoginWithEmailPage> {
               var exists = await UserServices.checkIfUserExists(
                   userCreds.user?.uid ?? "");
               if (exists) {
-                context.read<UserBloc>().add(
+                BlocProvider.of<UserBloc>(context).add(
                       GetUserFromDatabaseEvent(
                         userCreds.user?.uid ?? "",
                       ),
@@ -59,7 +59,7 @@ class _LoginWithEmailPageState extends State<LoginWithEmailPage> {
             return BlocConsumer<UserBloc, UserState>(
               listener: (context, state) {
                 if (state is GetUserLoaded) {
-                  context.read<UserBloc>().add(
+                  BlocProvider.of<UserBloc>(context).add(
                         SetUserLoggedInEvent(
                           state.user,
                         ),
@@ -106,7 +106,7 @@ class _LoginWithEmailPageState extends State<LoginWithEmailPage> {
                             Fluttertoast.showToast(msg: "Password is required");
                             return;
                           }
-                          context.read<AuthBloc>().add(
+                          BlocProvider.of<AuthBloc>(context).add(
                                 LoginWithEmailAndPasswordEvent(
                                   email: emailController.text,
                                   password: passwordController.text,

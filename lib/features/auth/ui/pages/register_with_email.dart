@@ -53,7 +53,6 @@ class _RegisterWithEmailPageState extends State<RegisterWithEmailPage> {
                 photoURL =
                     "https://firebasestorage.googleapis.com/v0/b/howdy-f2c44.appspot.com/o/avatars%2Fempty_profile_photo.jpg?alt=media&token=6f58ee29-7dfd-436b-9660-0f6462d02048";
               }
-              //TODO: user bloc insted;
               UserModel user = UserModel(
                 displayName: displayNameController.text,
                 email: emailController.text,
@@ -61,7 +60,7 @@ class _RegisterWithEmailPageState extends State<RegisterWithEmailPage> {
                 uid: state.userCredential.user?.uid ?? "",
                 username: usernameController.text,
               );
-              context.read<UserBloc>().add(
+              BlocProvider.of<UserBloc>(context).add(
                     SaveUserInDatabaseEvent(user: user),
                   );
             }
@@ -75,7 +74,7 @@ class _RegisterWithEmailPageState extends State<RegisterWithEmailPage> {
             return BlocConsumer<UserBloc, UserState>(
               listener: (context, state) {
                 if (state is GetUserLoaded) {
-                  context.read<UserBloc>().add(
+                  BlocProvider.of<UserBloc>(context).add(
                         SetUserLoggedInEvent(
                           state.user,
                         ),
@@ -195,7 +194,7 @@ class _RegisterWithEmailPageState extends State<RegisterWithEmailPage> {
                             Fluttertoast.showToast(msg: "Password is wrong");
                             return;
                           }
-                          context.read<AuthBloc>().add(
+                          BlocProvider.of<AuthBloc>(context).add(
                                 RegisterWithEmailAndPasswordEvent(
                                   avatar: avatar,
                                   username: usernameController.text,

@@ -71,7 +71,7 @@ class AddUsernamePage extends StatelessWidget {
                         uid: userCredential.user?.uid ?? '',
                         username: usernameController.text,
                       );
-                      context.read<UserBloc>().add(
+                      BlocProvider.of<UserBloc>(context).add(
                             SaveUserInDatabaseEvent(
                               user: user,
                             ),

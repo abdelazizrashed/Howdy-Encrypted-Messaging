@@ -4,6 +4,8 @@ import 'package:howdy/features/auth/bloc/blocs.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:howdy/features/auth/ui/widgets/widgets.dart';
 
+import '../../services/services.dart';
+
 class SignupOptionsPage extends StatelessWidget {
   const SignupOptionsPage({Key? key}) : super(key: key);
 
@@ -37,7 +39,14 @@ class SignupOptionsPage extends StatelessWidget {
                 lbl: "Register with google account",
                 icon: FontAwesomeIcons.google,
                 callback: () {
-                  context.read<AuthBloc>().add(const LoginWithGoogleEvent());
+                  if (AuthServices.isLoggedIn()) {
+                    Navigator.of(context).popUntil((route) => route.isFirst);
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pushNamed("/home");
+                  } else {
+                    BlocProvider.of<AuthBloc>(context)
+                        .add(const LoginWithGoogleEvent());
+                  }
                 },
               ),
             ),
