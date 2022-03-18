@@ -9,8 +9,11 @@ class AuthOptionsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AuthBloc(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => AuthBloc()),
+        BlocProvider(create: (context) => UserBloc()),
+      ],
       child: Scaffold(
         backgroundColor: Colors.white,
         body: Column(

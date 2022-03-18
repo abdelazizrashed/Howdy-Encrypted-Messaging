@@ -14,14 +14,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   late AuthServices _auth;
   AuthBloc() : super(AuthLoading()) {
     _auth = AuthServices();
-    on<RegisterWithEmailAndPassword>(_onRegisterWithEmailAndPassword);
-    on<LoginWithEmailAndPassword>(_onLoginWithEmailAndPassword);
-    on<LoginWithGoogle>(_onLoginWithGoogle);
-    on<LogOut>(_onLogOut);
+    on<RegisterWithEmailAndPasswordEvent>(_onRegisterWithEmailAndPassword);
+    on<LoginWithEmailAndPasswordEvent>(_onLoginWithEmailAndPassword);
+    on<LoginWithGoogleEvent>(_onLoginWithGoogle);
+    on<LogOutEvent>(_onLogOut);
   }
 
   Future<FutureOr<void>> _onRegisterWithEmailAndPassword(
-      RegisterWithEmailAndPassword event, Emitter<AuthState> emit) async {
+      RegisterWithEmailAndPasswordEvent event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
     var userCreds = await _auth.registerWithEmail(event.avatar, event.username,
         event.displayName, event.email, event.password, event.context);
@@ -33,7 +33,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<FutureOr<void>> _onLoginWithEmailAndPassword(
-      LoginWithEmailAndPassword event, Emitter<AuthState> emit) async {
+      LoginWithEmailAndPasswordEvent event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
     var userCreds = await _auth.loginWithEmail(event.email, event.password);
     emit(
@@ -44,7 +44,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<FutureOr<void>> _onLoginWithGoogle(
-      LoginWithGoogle event, Emitter<AuthState> emit) async {
+      LoginWithGoogleEvent event, Emitter<AuthState> emit) async {
     emit(AuthIdle());
     var userCreds = await _auth.signinWithGoogle();
     emit(
@@ -55,7 +55,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<FutureOr<void>> _onLogOut(
-      LogOut event, Emitter<AuthState> emit) async {
+      LogOutEvent event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
     await _auth.logout();
     emit(

@@ -45,9 +45,11 @@ class LoginOptionsPage extends StatelessWidget {
                       Navigator.of(context).pushNamed("/add-username",
                           arguments: userCredentials);
                     } else {
-                      var user = await UserServices.getUserFromDatabase(
-                          userCredentials.user?.uid ?? "");
-                      UserServices.setUserLoggedIn(user);
+                      context.read<UserBloc>().add(
+                            GetUserFromDatabaseEvent(
+                              userCredentials.user?.uid ?? "",
+                            ),
+                          );
                     }
                   } else {
                     Fluttertoast.showToast(
@@ -55,14 +57,24 @@ class LoginOptionsPage extends StatelessWidget {
                   }
                 }
               },
-              child: SignupLoginOptionBtn(
-                lbl: "Login with google account",
-                icon: FontAwesomeIcons.google,
-                callback: () async {
-                  // var userCredentials = await AuthServices.signinWithGoogle();
-                  context.read<AuthBloc>().add(const LoginWithGoogle());
-                  
+              child: BlocListener<UserBloc, UserState>(
+                listener: (context, state) {
+                  if (state is GetUserLoaded) {
+                    context.read<UserBloc>().add(
+                          SetUserLoggedInEvent(
+                            state.user,
+                          ),
+                        );
+                  }
                 },
+                child: SignupLoginOptionBtn(
+                  lbl: "Login with google account",
+                  icon: FontAwesomeIcons.google,
+                  callback: () async {
+                    // var userCredentials = await AuthServices.signinWithGoogle();
+                    context.read<AuthBloc>().add(const LoginWithGoogleEvent());
+                  },
+                ),
               ),
             ),
             SignupLoginOptionBtn(

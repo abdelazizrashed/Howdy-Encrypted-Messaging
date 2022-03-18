@@ -37,7 +37,7 @@ class SignupOptionsPage extends StatelessWidget {
                 lbl: "Register with google account",
                 icon: FontAwesomeIcons.google,
                 callback: () {
-                  context.read<AuthBloc>().add(const LoginWithGoogle());
+                  context.read<AuthBloc>().add(const LoginWithGoogleEvent());
                 },
               ),
             ),

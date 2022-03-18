@@ -61,11 +61,9 @@ class _RegisterWithEmailPageState extends State<RegisterWithEmailPage> {
                 uid: state.userCredential.user?.uid ?? "",
                 username: usernameController.text,
               );
-              UserServices.saveUserInDatabase(user);
-              UserServices.setUserLoggedIn(user);
-              Navigator.of(context).popUntil((route) => route.isFirst);
-              Navigator.of(context).pop();
-              Navigator.of(context).pushNamed("/home");
+              context.read<UserBloc>().add(
+                    SaveUserInDatabaseEvent(user: user),
+                  );
             }
           },
           builder: (context, state) {
@@ -74,136 +72,161 @@ class _RegisterWithEmailPageState extends State<RegisterWithEmailPage> {
                 child: CircularProgressIndicator(),
               );
             }
-            return SingleChildScrollView(
-              child: Column(
-                // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  GestureDetector(
-                    onTap: () async {
-                      // print("hello");
-                      FilePickerResult? result =
-                          await FilePicker.platform.pickFiles(
-                        allowMultiple: false,
-                        type: FileType.custom,
-                        allowedExtensions: ['jpg', 'png', 'jpeg', "svg"],
+            return BlocConsumer<UserBloc, UserState>(
+              listener: (context, state) {
+                if (state is GetUserLoaded) {
+                  context.read<UserBloc>().add(
+                        SetUserLoggedInEvent(
+                          state.user,
+                        ),
                       );
-                      if (result != null) {
-                        // print(result.files.first.);
-                        setState(() {
-                          avatar = result.files.first;
-                        });
-                      }
-                    },
-                    child: _renderUserAvatar(avatar?.path),
-                  ),
-                  TextField(
-                    controller: displayNameController,
-                    decoration: const InputDecoration(hintText: "Display name"),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextField(
-                    controller: emailController,
-                    decoration: const InputDecoration(hintText: "Email"),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextField(
-                    controller: usernameController,
-                    decoration: const InputDecoration(hintText: "Username"),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextField(
-                    obscureText: true,
-                    controller: passwordController,
-                    decoration: const InputDecoration(hintText: "Password"),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextField(
-                    obscureText: true,
-                    controller: confirmPasswordController,
-                    decoration:
-                        const InputDecoration(hintText: "Confirm password"),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  OutlinedButton(
-                    onPressed: () async {
-                      if (displayNameController.text.isEmpty) {
-                        Fluttertoast.showToast(msg: "Display name is required");
-                        return;
-                      }
-                      if (emailController.text.isEmpty) {
-                        Fluttertoast.showToast(msg: "Email is required");
-                        return;
-                      }
-                      if (usernameController.text.isEmpty) {
-                        Fluttertoast.showToast(msg: "Username is required");
-                        return;
-                      }
-                      var exists = await UserServices.checkIfUsernameExists(
-                          usernameController.text);
-                      if (exists) {
-                        Fluttertoast.showToast(msg: "username already exists");
-                        return;
-                      }
-
-                      if (passwordController.text.isEmpty) {
-                        Fluttertoast.showToast(msg: "Password is required");
-                        return;
-                      }
-                      if (confirmPasswordController.text.isEmpty) {
-                        Fluttertoast.showToast(
-                            msg: "You need to confirm the password");
-                        return;
-                      }
-                      if (!isPasswordStrongEnough(passwordController.text)) {
-                        Fluttertoast.showToast(msg: "The password is weak");
-                        return;
-                      }
-                      if (passwordController.text !=
-                          confirmPasswordController.text) {
-                        Fluttertoast.showToast(msg: "Password is wrong");
-                        return;
-                      }
-                      context.read<AuthBloc>().add(
-                            RegisterWithEmailAndPassword(
-                              avatar: avatar,
-                              username: usernameController.text,
-                              displayName: displayNameController.text,
-                              email: emailController.text,
-                              password: passwordController.text,
-                              context: context,
-                            ),
+                } else if (state is SetUserLoaded) {
+                  Navigator.of(context).popUntil((route) => route.isFirst);
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pushNamed("/home");
+                }
+              },
+              builder: (context, state) {
+                if (state is UserLoading) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                return SingleChildScrollView(
+                  child: Column(
+                    // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      GestureDetector(
+                        onTap: () async {
+                          // print("hello");
+                          FilePickerResult? result =
+                              await FilePicker.platform.pickFiles(
+                            allowMultiple: false,
+                            type: FileType.custom,
+                            allowedExtensions: ['jpg', 'png', 'jpeg', "svg"],
                           );
-                      //TODO:
-                    },
-                    style: ElevatedButton.styleFrom(
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(30),
+                          if (result != null) {
+                            // print(result.files.first.);
+                            setState(() {
+                              avatar = result.files.first;
+                            });
+                          }
+                        },
+                        child: _renderUserAvatar(avatar?.path),
+                      ),
+                      TextField(
+                        controller: displayNameController,
+                        decoration:
+                            const InputDecoration(hintText: "Display name"),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      TextField(
+                        controller: emailController,
+                        decoration: const InputDecoration(hintText: "Email"),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      TextField(
+                        controller: usernameController,
+                        decoration: const InputDecoration(hintText: "Username"),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      TextField(
+                        obscureText: true,
+                        controller: passwordController,
+                        decoration: const InputDecoration(hintText: "Password"),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      TextField(
+                        obscureText: true,
+                        controller: confirmPasswordController,
+                        decoration:
+                            const InputDecoration(hintText: "Confirm password"),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      OutlinedButton(
+                        onPressed: () async {
+                          if (displayNameController.text.isEmpty) {
+                            Fluttertoast.showToast(
+                                msg: "Display name is required");
+                            return;
+                          }
+                          if (emailController.text.isEmpty) {
+                            Fluttertoast.showToast(msg: "Email is required");
+                            return;
+                          }
+                          if (usernameController.text.isEmpty) {
+                            Fluttertoast.showToast(msg: "Username is required");
+                            return;
+                          }
+                          var exists = await UserServices.checkIfUsernameExists(
+                              usernameController.text);
+                          if (exists) {
+                            Fluttertoast.showToast(
+                                msg: "username already exists");
+                            return;
+                          }
+
+                          if (passwordController.text.isEmpty) {
+                            Fluttertoast.showToast(msg: "Password is required");
+                            return;
+                          }
+                          if (confirmPasswordController.text.isEmpty) {
+                            Fluttertoast.showToast(
+                                msg: "You need to confirm the password");
+                            return;
+                          }
+                          if (!isPasswordStrongEnough(
+                              passwordController.text)) {
+                            Fluttertoast.showToast(msg: "The password is weak");
+                            return;
+                          }
+                          if (passwordController.text !=
+                              confirmPasswordController.text) {
+                            Fluttertoast.showToast(msg: "Password is wrong");
+                            return;
+                          }
+                          context.read<AuthBloc>().add(
+                                RegisterWithEmailAndPasswordEvent(
+                                  avatar: avatar,
+                                  username: usernameController.text,
+                                  displayName: displayNameController.text,
+                                  email: emailController.text,
+                                  password: passwordController.text,
+                                  context: context,
+                                ),
+                              );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(30),
+                            ),
+                          ),
+                        ),
+                        child: const Padding(
+                          padding: EdgeInsets.all(15.0),
+                          child: Text(
+                            "Register",
+                            style: TextStyle(
+                              fontSize: 20,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                    child: const Padding(
-                      padding: EdgeInsets.all(15.0),
-                      child: Text(
-                        "Register",
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
+                );
+              },
             );
           },
         ),

@@ -21,13 +21,14 @@ class UserServices {
     return snapshot.exists;
   }
 
-  static void saveUserInDatabase(UserModel user) {
+  Future<void> saveUserInDatabase(UserModel user) async {
     var ref = FirebaseFirestore.instance.collection("Users").doc(user.uid);
     var json = UserServices.toJson(user);
-    ref.set(json);
+    await ref.set(json);
+    await setUserLoggedIn(user);
   }
 
-  static Future<UserModel> getUserFromDatabase(String uid) async {
+  Future<UserModel> getUserFromDatabase(String uid) async {
     var snapshot =
         await FirebaseFirestore.instance.collection("Users").doc(uid).get();
     var json = snapshot.data() ?? {"": null};
@@ -54,17 +55,17 @@ class UserServices {
     );
   }
 
-  static void setUserLoggedIn(UserModel user) async {
+  Future<void> setUserLoggedIn(UserModel user) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("email", user.email);
+    await prefs.setString("email", user.email);
 
-    prefs.setString("name", user.displayName);
+    await prefs.setString("name", user.displayName);
 
-    prefs.setString("phoneNumber", user.username);
+    await prefs.setString("phoneNumber", user.username);
 
-    prefs.setString("photoUrl", user.photoURL);
+    await prefs.setString("photoUrl", user.photoURL);
 
-    prefs.setString("uid", user.uid);
-    prefs.setBool("isLoggedIn", true);
+    await prefs.setString("uid", user.uid);
+    await prefs.setBool("isLoggedIn", true);
   }
 }
