@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:howdy/core/utilities/utilities.dart';
 import 'package:howdy/route_generator.dart';
 
 import 'features/auth/bloc/blocs.dart';

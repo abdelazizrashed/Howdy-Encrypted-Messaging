@@ -1,9 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../bloc/blocs.dart';
-import '../../services/services.dart';
 
 class AuthOptionsPage extends StatelessWidget {
   const AuthOptionsPage({Key? key}) : super(key: key);
