@@ -1,122 +1,61 @@
 import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:howdy/features/chats/models/message_status.dart';
+import 'package:howdy/features/chats/models/models.dart';
+import 'package:intl/intl.dart';
 
 class MessageCard extends StatelessWidget {
-  final Map<String, Object> msg;
+  final FriendListItemModel friendListItem;
 
-  const MessageCard({Key? key, required this.msg}) : super(key: key);
+  const MessageCard({
+    Key? key,
+    required this.friendListItem,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    String time;
+    var today =
+        DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+    var yesterday = DateTime(
+        DateTime.now().year, DateTime.now().month, DateTime.now().day - 1);
+    var tempDate = DateTime(friendListItem.createdAt.year,
+        friendListItem.createdAt.month, friendListItem.createdAt.day);
+    if (tempDate == today) {
+      time = DateFormat('hh:mm a').format(friendListItem.createdAt);
+    } else if (tempDate == yesterday) {
+      time = "Yesterday";
+    } else {
+      time = DateFormat("M-d").format(friendListItem.createdAt);
+      if (friendListItem.createdAt.year < today.year &&
+          friendListItem.createdAt.year > 2000) {
+        var temp = friendListItem.createdAt.year - 2000;
+        time = temp.toString() + "-" + time;
+      }
+    }
+    return ListTile(
       onTap: () {
-        //TODO: do something here
+        //TODO: go to chat room
       },
-      child: Padding(
-        padding: const EdgeInsets.all(8),
-        child: Row(
-          children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(100)),
-              child: SizedBox(
-                width: 60,
-                height: 60,
-                child: Image(
-                  image: AssetImage(msg["img"] as String),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        // mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          FractionallySizedBox(
-                            widthFactor: 1,
-                            child: GestureDetector(
-                              onTap: _onCallCardTapped,
-                              child: Text(
-                                msg["name"] as String,
-                                style: const TextStyle(
-                                  fontSize: 18.0,
-                                ),
-                              ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: _onCallCardTapped,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 5),
-                              child: Row(
-                                // mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 8),
-                                    child: _renderMsgStatusIcon(
-                                        msg["messageStatus"] as MessageStatus),
-                                  ),
-                                  Flexible(
-                                    child: Text(
-                                      msg["message"] as String,
-                                      maxLines: 2,
-                                      style: const TextStyle(
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
+      leading: ClipRRect(
+        borderRadius: const BorderRadius.all(Radius.circular(100)),
+        child: SizedBox(
+          width: 60,
+          height: 60,
+          child: Image(
+            image: NetworkImage(friendListItem.photoURL),
+            fit: BoxFit.cover,
+          ),
         ),
       ),
+      title: Text(
+        friendListItem.displayName,
+      ),
+      subtitle: Text(
+        friendListItem.lastMessage,
+        maxLines: 2,
+      ),
+      trailing: Text(time),
     );
   }
-
-  Icon _renderMsgStatusIcon(MessageStatus messageStatus) {
-    switch (messageStatus) {
-      case MessageStatus.notRecieved:
-        return const Icon(
-          FontAwesome5.check,
-          color: Colors.grey,
-          size: 13,
-        );
-      case MessageStatus.recieved:
-        return const Icon(
-          FontAwesome5.check_double,
-          color: Colors.grey,
-          size: 13,
-        );
-      case MessageStatus.read:
-        return const Icon(
-          FontAwesome5.check_double,
-          color: Colors.blue,
-          size: 13,
-        );
-      case MessageStatus.sent:
-        return const Icon(
-          null,
-          size: 13,
-        );
-    }
-  }
-}
-
-void _onCallCardTapped() {
-  //TODO: Implement this function
 }
