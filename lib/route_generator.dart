@@ -26,7 +26,10 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const RegisterWithEmailPage());
       case "/login-with-email":
         return MaterialPageRoute(builder: (_) => const LoginWithEmailPage());
+      case '/search-users':
+        return MaterialPageRoute(builder: (_) => const SearchUsersPage());
       default:
+        //TODO: check if the user is logged in and render the page accordengly
         return MaterialPageRoute(builder: (_) => const HomePage());
     }
     // throw Exception("No Route");

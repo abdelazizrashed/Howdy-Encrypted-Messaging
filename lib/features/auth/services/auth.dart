@@ -7,7 +7,7 @@ class AuthServices {
   //* Utilities
 
   static bool isLoggedIn() {
-    return FirebaseAuth.instance.currentUser == null;
+    return FirebaseAuth.instance.currentUser != null;
   }
 
   //* Auth using email and password

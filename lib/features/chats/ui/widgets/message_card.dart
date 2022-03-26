@@ -117,68 +117,6 @@ class MessageCard extends StatelessWidget {
   }
 }
 
-// Transform _renderCallStatusArrow(CallStatus callStatus) {
-//   switch (callStatus) {
-//     case CallStatus.recievedFailure:
-//       return Transform.rotate(
-//         angle: (135) * math.pi / 180,
-//         child: const Icon(
-//           Icons.arrow_right_alt_sharp,
-//           color: Colors.red,
-//         ),
-//       );
-
-//     case CallStatus.recievedSuccess:
-//       return Transform.rotate(
-//         angle: (135) * math.pi / 180,
-//         child: const Icon(
-//           Icons.arrow_right_alt_sharp,
-//           color: Colors.green,
-//         ),
-//       );
-//     case CallStatus.sentSuccess:
-//       return Transform.rotate(
-//         angle: (-45) * math.pi / 180,
-//         child: const Icon(
-//           Icons.arrow_right_alt_sharp,
-//           color: Colors.green,
-//         ),
-//       );
-//     case CallStatus.sentFailure:
-//       return Transform.rotate(
-//         angle: (-45) * math.pi / 180,
-//         child: const Icon(
-//           Icons.arrow_right_alt_sharp,
-//           color: Colors.red,
-//         ),
-//       );
-//   }
-// }
-
-// IconButton _renderCallBtn(CallType callType) {
-//   if (callType == CallType.video) {
-//     return IconButton(
-//       icon: const Icon(
-//         Icons.videocam,
-//         color: Colors.grey,
-//       ),
-//       onPressed: () {
-//         //TODO: implement call functionality
-//       },
-//     );
-//   } else {
-//     return IconButton(
-//       icon: const Icon(
-//         Icons.call,
-//         color: Colors.grey,
-//       ),
-//       onPressed: () {
-//         //TODO: implement call functionality
-//       },
-//     );
-//   }
-// }
-
 void _onCallCardTapped() {
   //TODO: Implement this function
 }

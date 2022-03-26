@@ -22,4 +22,24 @@ class UserModel {
       username: username ?? this.username,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "displayName": displayName,
+      "email": email,
+      "photoURL": photoURL,
+      "uid": uid,
+      "username": username,
+    };
+  }
+
+  static UserModel fromJson(Map<String, dynamic> json) {
+    return UserModel(
+      email: json["email"] as String,
+      displayName: json["displayName"] as String,
+      photoURL: json["photoURL"] as String,
+      uid: json["uid"] as String,
+      username: json["username"] as String,
+    );
+  }
 }

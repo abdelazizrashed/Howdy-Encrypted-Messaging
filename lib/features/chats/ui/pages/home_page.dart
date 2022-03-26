@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/font_awesome5_icons.dart';
 import 'package:howdy/features/chats/models/models.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../widgets/widgets.dart';
 
@@ -27,7 +29,9 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushNamed("/search-users");
+            },
             icon: const Icon(
               Icons.search,
             ),
@@ -44,8 +48,14 @@ class _HomePageState extends State<HomePage> {
           title: Text(appBarTitle),
           actions: [
             IconButton(
-              onPressed: () {
+              onPressed: () async {
                 //TODO:Go to settings page
+                await FirebaseAuth.instance.signOut();
+                await (await SharedPreferences.getInstance())
+                    .setBool("isLoggedIn", false);
+                Navigator.of(context).popUntil((route) => route.isFirst);
+                Navigator.of(context).pop();
+                Navigator.of(context).pushNamed("/auth");
               },
               icon: const Icon(Icons.settings),
             ),
@@ -77,29 +87,37 @@ class _HomePageState extends State<HomePage> {
             CallsPage(),
           ],
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _page,
-          items: const [
-            BottomNavigationBarItem(
-              label: "CHATS",
-              icon: Icon(
-                Icons.message,
-                color: Colors.blue,
+        bottomNavigationBar: BottomAppBar(
+          shape: const CircularNotchedRectangle(),
+          notchMargin: 10,
+          child: BottomNavigationBar(
+            elevation: 0,
+            backgroundColor: Theme.of(context).primaryColor.withAlpha(0),
+            selectedItemColor: Theme.of(context).colorScheme.onSurface,
+            // backgroundColor: Colors.white,
+            currentIndex: _page,
+            items: const [
+              BottomNavigationBarItem(
+                label: "CHATS",
+                icon: Icon(
+                  Icons.message,
+                  color: Colors.blue,
+                ),
               ),
-            ),
-            BottomNavigationBarItem(
-              label: "CALLS",
-              icon: Icon(
-                Icons.phone,
-                color: Colors.blue,
+              BottomNavigationBarItem(
+                label: "CALLS",
+                icon: Icon(
+                  Icons.phone,
+                  color: Colors.blue,
+                ),
               ),
-            ),
-          ],
-          onTap: (tabIndex) {
-            pageController.animateToPage(tabIndex,
-                duration: const Duration(milliseconds: 500),
-                curve: Curves.easeInOut);
-          },
+            ],
+            onTap: (tabIndex) {
+              pageController.animateToPage(tabIndex,
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.easeInOut);
+            },
+          ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: FloatingActionButton(
