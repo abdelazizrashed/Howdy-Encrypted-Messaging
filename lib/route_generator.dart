@@ -1,12 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:howdy/features/auth/ui/pages/pages.dart';
+import 'package:howdy/features/chats/models/friend_list_item_model.dart';
+import 'package:howdy/features/chats/ui/pages/chat_room_page.dart';
 import 'package:howdy/features/chats/ui/pages/pages.dart';
 
 class RouteGenerator {
-  static Route<dynamic> generateRoute(RouteSettings settings) {
-    //get the argument that have been passed with the route
-
+  static Route generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case '/home':
         return MaterialPageRoute(builder: (_) => const HomePage());
@@ -28,8 +28,14 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const LoginWithEmailPage());
       case '/search-users':
         return MaterialPageRoute(builder: (_) => const SearchUsersPage());
+      case "/chat-room":
+        final args = settings.arguments as FriendListItemModel;
+        return MaterialPageRoute(
+            builder: (_) => ChatRoomPage(friendListItem: args));
       default:
-        //TODO: check if the user is logged in and render the page accordengly
+        if (FirebaseAuth.instance.currentUser == null) {
+          return MaterialPageRoute(builder: (_) => const AuthOptionsPage());
+        }
         return MaterialPageRoute(builder: (_) => const HomePage());
     }
     // throw Exception("No Route");

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fluttericon/font_awesome5_icons.dart';
-import 'package:howdy/features/chats/models/message_status.dart';
 import 'package:howdy/features/chats/models/models.dart';
 import 'package:intl/intl.dart';
 
@@ -35,7 +33,8 @@ class MessageCard extends StatelessWidget {
     }
     return ListTile(
       onTap: () {
-        //TODO: go to chat room
+        Navigator.of(context)
+            .pushNamed("/chat-room", arguments: friendListItem);
       },
       leading: ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(100)),

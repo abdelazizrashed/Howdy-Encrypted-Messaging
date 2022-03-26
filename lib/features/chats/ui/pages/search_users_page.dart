@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:howdy/features/chats/bloc/blocs.dart';
+import 'package:howdy/features/chats/models/friend_list_item_model.dart';
 
 class SearchUsersPage extends StatelessWidget {
   const SearchUsersPage({Key? key}) : super(key: key);
@@ -74,7 +75,10 @@ class SearchUsersPage extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: ListTile(
                     onTap: () {
-                      //TODO: got to chat room page
+                      var temp = FriendListItemModel(DateTime.now(), " ",
+                          user.displayName, user.photoURL, user.uid);
+                      Navigator.of(context)
+                          .pushNamed("/chat-room", arguments: temp);
                     },
                     leading: ClipRRect(
                       borderRadius:

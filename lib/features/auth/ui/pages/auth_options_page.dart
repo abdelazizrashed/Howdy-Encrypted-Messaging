@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 
@@ -78,31 +77,4 @@ class AuthOptionsPage extends StatelessWidget {
     );
   }
 
-//TODO: remove this as it  is useless
-  StreamBuilder<QuerySnapshot<Object?>> newMethod(
-      CollectionReference<Object?> usersCollection) {
-    return StreamBuilder(
-      stream: usersCollection.snapshots(),
-      builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        var users = snapshot.data?.docs;
-        if (users == null) {
-          return const Center(
-            child: Text("No Users were found"),
-          );
-        }
-        return Center(
-          child: ListView.builder(
-            itemCount: snapshot.data?.docs.length,
-            itemBuilder: ((BuildContext context, int index) {
-              return Center(
-                child: Text(
-                  users[index]["name"],
-                ),
-              );
-            }),
-          ),
-        );
-      },
-    );
-  }
 }
