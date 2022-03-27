@@ -32,7 +32,9 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(
           leading: IconButton(
             onPressed: () {
-              Navigator.of(context).pushNamed("/search-users");
+              if (_page == 0) {
+                Navigator.of(context).pushNamed("/search-friends-list");
+              }
             },
             icon: const Icon(
               Icons.search,
@@ -123,7 +125,11 @@ class _HomePageState extends State<HomePage> {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            if (_page == 0) {
+              Navigator.of(context).pushNamed("/search-users");
+            }
+          },
           child: Icon(
             addIcon,
           ),

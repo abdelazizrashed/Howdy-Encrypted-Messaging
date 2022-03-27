@@ -4,6 +4,7 @@ import 'package:howdy/features/auth/ui/pages/pages.dart';
 import 'package:howdy/features/chats/models/friend_list_item_model.dart';
 import 'package:howdy/features/chats/ui/pages/chat_room_page.dart';
 import 'package:howdy/features/chats/ui/pages/pages.dart';
+import 'package:howdy/features/chats/ui/pages/search_friends_list.dart';
 
 class RouteGenerator {
   static Route generateRoute(RouteSettings settings) {
@@ -28,6 +29,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const LoginWithEmailPage());
       case '/search-users':
         return MaterialPageRoute(builder: (_) => const SearchUsersPage());
+      case '/search-friends-list':
+        return MaterialPageRoute(builder: (_) => const SearchFriendsListPage());
       case "/chat-room":
         final args = settings.arguments as FriendListItemModel;
         return MaterialPageRoute(

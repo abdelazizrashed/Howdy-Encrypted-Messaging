@@ -26,13 +26,16 @@ class App extends StatelessWidget {
         BlocProvider(
           create: (context) => FriendsListBloc(),
         ),
+        BlocProvider(
+          create: (context) => SearchFriendsListBloc(),
+        ),
       ],
       child: MaterialApp(
         title: 'Howdy: Encrypted messaging app',
         theme: ThemeData.dark(),
         debugShowCheckedModeBanner: false,
-        // initialRoute: isLoggedIn ? "/home" : "/auth",
-        initialRoute: "/home",
+        initialRoute: isLoggedIn ? "/home" : "/auth",
+        // initialRoute: "/home",
         onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );
