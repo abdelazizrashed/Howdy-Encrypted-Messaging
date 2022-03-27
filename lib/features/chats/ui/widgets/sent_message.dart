@@ -13,9 +13,9 @@ class SentMessage extends StatelessWidget {
         child: Container(
           constraints:
               BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.6),
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(8)),
-            color: Colors.blue,
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(8)),
+            color: Colors.grey.shade700,
           ),
           child: Padding(
             padding: const EdgeInsets.all(8.0),

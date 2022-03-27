@@ -13,9 +13,9 @@ class RecievedMessage extends StatelessWidget {
         child: Container(
           constraints:
               BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.6),
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(8)),
-            color: Colors.green,
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(8)),
+            color: Theme.of(context).cardColor,
           ),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
