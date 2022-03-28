@@ -31,6 +31,7 @@ class FriendsListBloc extends Bloc<FriendsListEvent, FriendsListState> {
           var friendListItem = FriendListItemModel.fromJson(value);
           friendsList.add(friendListItem);
         }
+        friendsList.sort((a, b) => b.createdAt.compareTo(a.createdAt));
         return FriendsListLoaded(friendsList);
       },
     );
