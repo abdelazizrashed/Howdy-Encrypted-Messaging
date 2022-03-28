@@ -35,5 +35,6 @@ class FriendsListBloc extends Bloc<FriendsListEvent, FriendsListState> {
         return FriendsListLoaded(friendsList);
       },
     );
+    emit(const FriendsListLoaded([]));
   }
 }

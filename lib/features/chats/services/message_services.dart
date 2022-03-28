@@ -27,12 +27,18 @@ class MessageServices {
     var fromUser = await _userServices.getUserFromDatabase(message.fromUid);
     var toUser = await _userServices.getUserFromDatabase(message.toUid);
     //update the last message
+    var friendsListSnapshot = await FirebaseFirestore.instance
+        .collection("FriendsList")
+        .doc(message.fromUid)
+        .get();
+
     await FirebaseFirestore.instance
         .collection("FriendsList")
         .doc(message.fromUid)
         .set(
       {
         "friendsList": {
+          ...friendsListSnapshot.data()?["friendsList"],
           message.toUid: {
             "createdAt":
                 (message.createdAt.millisecondsSinceEpoch / 1000).round(),
@@ -56,8 +62,8 @@ class MessageServices {
           message.fromUid: {
             "createdAt":
                 (message.createdAt.millisecondsSinceEpoch / 1000).round(),
-            "displayName": fromUser.displayName,
-            "photoURL": fromUser.photoURL,
+            "displayName": toUser.displayName,
+            "photoURL": toUser.photoURL,
             "lastMessage":
                 message.text == null || (message.text?.isEmpty ?? true)
                     ? "attachment"

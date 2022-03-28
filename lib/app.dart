@@ -29,6 +29,9 @@ class App extends StatelessWidget {
         BlocProvider(
           create: (context) => SearchFriendsListBloc(),
         ),
+        BlocProvider(
+          create: (context) => MessageBloc(),
+        ),
       ],
       child: MaterialApp(
         title: 'Howdy: Encrypted messaging app',
